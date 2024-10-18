@@ -29,7 +29,7 @@ class _AlbumsMasterState extends State<AlbumsMaster> {
         backgroundColor: Colors.red,
       ),
       body: Container(
-        color: Colors.black, // Fond noir pour le corps de l'écran
+        color: Colors.black,
         child: FutureBuilder<List<Album>>(
           future: AlbumService.fetchAlbums(),
           builder: (context, snapshot) {
@@ -38,13 +38,15 @@ class _AlbumsMasterState extends State<AlbumsMaster> {
             } else if (snapshot.hasError) {
               return Center(child: Text(
                 'Erreur de chargement',
-                style: TextStyle(color: Colors.white), // Texte blanc pour plus de contraste
-              ));
+                style: TextStyle(color: Colors.white),
+              )
+              );
             } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
               return Center(child: Text(
                 'Aucun album disponible',
-                style: TextStyle(color: Colors.white), // Texte blanc
-              ));
+                style: TextStyle(color: Colors.white),
+              )
+              );
             }
 
             final albums = snapshot.data!;

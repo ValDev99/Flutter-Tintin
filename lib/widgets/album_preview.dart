@@ -8,18 +8,18 @@ class AlbumPreview extends StatelessWidget {
   final Function(Album) onToggleReadingList;
 
   const AlbumPreview({
-    Key? key,
+    super.key,
     required this.album,
     required this.isInReadingList,
     required this.onToggleReadingList,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {
     return Container(
       margin: const EdgeInsets.symmetric(vertical: 5.0),
       decoration: BoxDecoration(
-        color: Colors.black, //
+        color: Colors.grey.shade900, //
       ),
       child: ListTile(
         title: Text(
@@ -40,7 +40,7 @@ class AlbumPreview extends StatelessWidget {
         tileColor: isInReadingList ? Colors.green[700] : Colors.brown[800],
         trailing: IconButton(
           icon: Icon(
-            isInReadingList ? Icons.check_box : Icons.check_box_outline_blank,
+            isInReadingList ? Icons.bookmark_add : Icons.bookmark_add_outlined,
             color: Colors.white, //
           ),
           onPressed: () => onToggleReadingList(album),
