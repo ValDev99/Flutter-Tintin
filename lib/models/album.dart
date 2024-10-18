@@ -1,51 +1,41 @@
 import 'gps.dart';
 
 class Album {
-  final String title;
+  final String titre;
   final int numero;
-  final int year;
-  final int? yearInColor;
+  final int parution;
+  final int? parutionEnCouleur;
   final String image;
   final String resume;
   final GPS gps;
-  final String location;
+  final String lieu;
 
   Album({
-    required this.title,
+    required this.titre,
     required this.numero,
-    required this.year,
-    this.yearInColor,
+    required this.parution,
+    this.parutionEnCouleur,
     required this.image,
     required this.resume,
     required this.gps,
-    required this.location,
+    required this.lieu,
   });
 
-  @override
-  String toString() {
-    return '''
-Album:
-  Title: $title
-  Numero: $numero
-  Year: $year
-  Year in Color: ${yearInColor ?? 'N/A'}
-  Image: $image
-  Resume: $resume
-  GPS: ${gps.toString()}
-  Location: $location
-    ''';
-  }
+  factory Album.fromJson(Map<String, dynamic> json) {
+    List<String> gpsCoords = json['gps'].split(',');
 
-  Map<String, dynamic> toJson() {
-    return {
-      'title': title,
-      'numero': numero,
-      'year': year,
-      'yearInColor': yearInColor,
-      'image': image,
-      'resume': resume,
-      'gps': gps.toJson(),
-      'location': location,
-    };
+    return Album(
+      titre: json['titre'],
+      numero: json['numero'],
+      parution: json['parution'],
+      parutionEnCouleur: json['parutionEnCouleur'],
+      image: json['image'],
+      resume: json['resume'],
+      lieu: json['lieu'],
+      gps: GPS(
+        latitude: double.parse(gpsCoords[0]),
+        longitude: double.parse(gpsCoords[1]),
+      ),
+    );
   }
 }

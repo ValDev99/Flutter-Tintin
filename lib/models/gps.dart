@@ -4,15 +4,11 @@ class GPS {
 
   GPS({required this.latitude, required this.longitude});
 
-  @override
-  String toString() {
-    return 'GPS: (latitude: $latitude, longitude: $longitude)';
-  }
-
-  Map<String, dynamic> toJson() {
-    return {
-      'latitude': latitude,
-      'longitude': longitude,
-    };
+  factory GPS.fromJson(String gpsString) {
+    List<String> gpsCoords = gpsString.split(',');
+    return GPS(
+      latitude: double.parse(gpsCoords[0]),
+      longitude: double.parse(gpsCoords[1]),
+    );
   }
 }

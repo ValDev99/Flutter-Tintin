@@ -16,8 +16,7 @@ class _AlbumsMasterState extends State<AlbumsMaster> {
   @override
   void initState() {
     super.initState();
-    // Appel à la méthode generateAlbums pour récupérer une liste d'albums
-    _albums = AlbumService.generateAlbums(10);
+    _albums = AlbumService.fetchAlbums();
   }
 
   @override
@@ -37,7 +36,6 @@ class _AlbumsMasterState extends State<AlbumsMaster> {
             return Center(child: Text('No albums found'));
           }
 
-          // Liste d'albums générés
           List<Album> albums = snapshot.data!;
           return ListView.builder(
             itemCount: albums.length,
