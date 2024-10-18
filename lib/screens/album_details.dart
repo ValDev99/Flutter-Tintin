@@ -18,30 +18,39 @@ class AlbumDetails extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         title: Text(album.titre),
+        backgroundColor: Colors.redAccent,
       ),
-      body: Padding(
+      body: Container(
+        color: Colors.black,
         padding: const EdgeInsets.all(20.0),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-
+            Text(
+              'Album n°: ${album.numero}',
+              style: TextStyle(color: Colors.white, fontSize: 16),
+            ),
             SizedBox(height: 10),
-            Text('Numéro: ${album.numero}'),
-            Text('Parution: ${album.parution}'),
-            if (album.parutionEnCouleur != null)
-              Text('Parution en couleur: ${album.parutionEnCouleur}'),
+            Text(
+              'Résumé: ${album.resume}',
+              style: TextStyle(color: Colors.white, fontSize: 14),
+            ),
             SizedBox(height: 10),
-            Text('Résumé: ${album.resume}'),
+            Text(
+              'Année de parution: ${album.parution}',
+              style: TextStyle(color: Colors.white),
+            ),
             SizedBox(height: 10),
-            Text('Lieu: ${album.lieu}'),
-            SizedBox(height: 10),
-            Text('Coordonnées GPS: ${album.gps.latitude}, ${album.gps.longitude}'),
             album.image.isNotEmpty
-                ? Image.asset(
-              'images/${album.image}',
-              width: 250,
-              height: 250,)
-                : Icon(Icons.image),
+                ? Center(
+              child: Image.asset(
+                'images/${album.image}',
+                width: 200,
+                height: 300,
+                fit: BoxFit.cover,
+              ),
+            )
+                : Icon(Icons.image, size: 100, color: Colors.white),
           ],
         ),
       ),
@@ -50,6 +59,7 @@ class AlbumDetails extends StatelessWidget {
           onToggleReadingList(album);
           Navigator.pop(context);
         },
+        backgroundColor: Colors.redAccent,
         child: Icon(
           isInReadingList ? Icons.remove_circle : Icons.add_circle,
         ),

@@ -26,33 +26,43 @@ class _AlbumsMasterState extends State<AlbumsMaster> {
     return Scaffold(
       appBar: AppBar(
         title: Text('Albums'),
+        backgroundColor: Colors.red,
       ),
-      body: FutureBuilder<List<Album>>(
-        future: AlbumService.fetchAlbums(),
-        builder: (context, snapshot) {
-          if (snapshot.connectionState == ConnectionState.waiting) {
-            return Center(child: CircularProgressIndicator());
-          } else if (snapshot.hasError) {
-            return Center(child: Text('Erreur de chargement'));
-          } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
-            return Center(child: Text('Aucun album disponible'));
-          }
+      body: Container(
+        color: Colors.black, // Fond noir pour le corps de l'écran
+        child: FutureBuilder<List<Album>>(
+          future: AlbumService.fetchAlbums(),
+          builder: (context, snapshot) {
+            if (snapshot.connectionState == ConnectionState.waiting) {
+              return Center(child: CircularProgressIndicator());
+            } else if (snapshot.hasError) {
+              return Center(child: Text(
+                'Erreur de chargement',
+                style: TextStyle(color: Colors.white), // Texte blanc pour plus de contraste
+              ));
+            } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
+              return Center(child: Text(
+                'Aucun album disponible',
+                style: TextStyle(color: Colors.white), // Texte blanc
+              ));
+            }
 
-          final albums = snapshot.data!;
-          return ListView.builder(
-            itemCount: albums.length,
-            itemBuilder: (context, index) {
-              final album = albums[index];
-              final isInReadingList = _readingList.contains(album);
+            final albums = snapshot.data!;
+            return ListView.builder(
+              itemCount: albums.length,
+              itemBuilder: (context, index) {
+                final album = albums[index];
+                final isInReadingList = _readingList.contains(album);
 
-              return AlbumPreview(
-                album: album,
-                isInReadingList: isInReadingList,
-                onToggleReadingList: toggleReadingList,
-              );
-            },
-          );
-        },
+                return AlbumPreview(
+                  album: album,
+                  isInReadingList: isInReadingList,
+                  onToggleReadingList: toggleReadingList,
+                );
+              },
+            );
+          },
+        ),
       ),
     );
   }
