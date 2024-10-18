@@ -1,9 +1,7 @@
 import 'package:flutter/material.dart';
-import '../services/album_service.dart';
 import '../models/album.dart';
+import '../services/album_service.dart';
 import '../widgets/album_preview.dart';
-
-
 
 class AlbumsMaster extends StatefulWidget {
   @override
@@ -11,12 +9,16 @@ class AlbumsMaster extends StatefulWidget {
 }
 
 class _AlbumsMasterState extends State<AlbumsMaster> {
-  late Future<List<Album>> _albums;
+  List<Album> _readingList = [];
 
-  @override
-  void initState() {
-    super.initState();
-    _albums = AlbumService.fetchAlbums();
+  void toggleReadingList(Album album) {
+    setState(() {
+      if (_readingList.contains(album)) {
+        _readingList.remove(album);
+      } else {
+        _readingList.add(album);
+      }
+    });
   }
 
   @override
@@ -26,22 +28,28 @@ class _AlbumsMasterState extends State<AlbumsMaster> {
         title: Text('Albums'),
       ),
       body: FutureBuilder<List<Album>>(
-        future: _albums,
+        future: AlbumService.fetchAlbums(),
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
             return Center(child: CircularProgressIndicator());
           } else if (snapshot.hasError) {
-            return Center(child: Text('Error: ${snapshot.error}'));
+            return Center(child: Text('Erreur de chargement'));
           } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
-            return Center(child: Text('No albums found'));
+            return Center(child: Text('Aucun album disponible'));
           }
 
-          List<Album> albums = snapshot.data!;
+          final albums = snapshot.data!;
           return ListView.builder(
             itemCount: albums.length,
             itemBuilder: (context, index) {
-              Album album = albums[index];
-              return AlbumPreview(album: album);
+              final album = albums[index];
+              final isInReadingList = _readingList.contains(album);
+
+              return AlbumPreview(
+                album: album,
+                isInReadingList: isInReadingList,
+                onToggleReadingList: toggleReadingList,
+              );
             },
           );
         },
